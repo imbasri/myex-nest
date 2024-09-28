@@ -21,14 +21,20 @@ export class UsersService {
     return this.userRepository.findOneBy({ id });
   }
 
-  async update(id:number , attrs: Partial<User>){
-    const user  = await this.findOneBy(id);
-    if(!user){
+  async update(id: number, attrs: Partial<User>) {
+    const user = await this.findOneBy(id);
+    if (!user) {
       throw new Error('User not found');
     }
     Object.assign(user, attrs);
     return this.userRepository.save(user);
   }
 
-  remove(){}
+  async remove(id: number) {
+    const user = await this.findOneBy(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.userRepository.remove(user);
+  }
 }

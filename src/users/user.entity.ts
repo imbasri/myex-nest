@@ -1,7 +1,7 @@
 import {
   AfterInsert,
-  // AfterUpdate,
-  // AfterRemove,
+  AfterUpdate,
+  AfterRemove,
   Entity,
   Column,
   PrimaryGeneratedColumn,
@@ -18,6 +18,17 @@ export class User {
   @Column()
   password: string;
 
+  // method hook setelah update dari user
+  @AfterUpdate()
+  logUpdate() {
+    console.log('Updated User with ID: ', this.id);
+  }
+
+  // method hook setelah delete dari user
+  @AfterRemove()
+  logRemove() {
+    console.log('Removed User with ID: ', this.id);
+  }
   // method hook setelah insert dari user
   @AfterInsert()
   logInsert() {
