@@ -7,8 +7,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
-  findAll() {
-    return this.userRepository.find();
+  findAll(email: string) {
+    return this.userRepository.find({where: {email}});
   }
   create(name: string, email: string, password: string) {
     // create a new user for instance
