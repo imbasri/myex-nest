@@ -7,7 +7,7 @@ export class UsersController {
 
   @Get()
   findAllUsers(@Query('email') email: string) {
-    return this.usersService.findAll({ email });
+    return this.usersService.findAll(email);
   }
 
   // take the service and inject it into the controller
