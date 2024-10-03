@@ -26,7 +26,7 @@ export class UsersController {
   // update a user
   @Patch('/:id')
   updateUser(@Param('id') id: string, @Body() body: Partial<CreateUserDto>) {
-    return this.usersService.update(parseInt(id), body, )
+    return this.usersService.update(parseInt(id), body)
   }
 
   @Delete("/:id")
