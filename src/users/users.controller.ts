@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query,UseInterceptors,ClassSerializerInterceptor } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query} from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
-import { SerializeInterceptor } from 'src/interceptor/serialize.interceptor';
+import { Serialize } from '../interceptor/serialize.interceptor';
 import { UserDTO } from './dtos/user.dto';
 @Controller('users')
 export class UsersController {
-  @UseInterceptors(SerializeInterceptor)
+  @Serialize(UserDTO)
   @Get()
   findAllUsers(@Query('email') email: string) {
     return this.usersService.findAll(email);
@@ -20,7 +20,7 @@ export class UsersController {
   }
 
   // interceptor membatasi hasil response
-  @UseInterceptors(new SerializeInterceptor(UserDTO))
+  @Serialize(UserDTO)
   @Get('/:id')
   findUser(@Param('id') id: string) {
     return this.usersService.findOneBy(parseInt(id));
