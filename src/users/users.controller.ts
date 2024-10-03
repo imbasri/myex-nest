@@ -8,7 +8,7 @@ export class UsersController {
   @Serialize(UserDTO)
   @Get()
   findAllUsers(@Query('email') email: string) {
-    return this.usersService.findAll(email);
+    return this.usersService.find(email);
   }
 
   // take the service and inject it into the controller
