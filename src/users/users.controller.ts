@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query} from '@nestjs/common';
+import { AuthService } from './auth.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from '../interceptor/serialize.interceptor';
@@ -12,7 +22,10 @@ export class UsersController {
   }
 
   // take the service and inject it into the controller
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
   // create a new user
   @Post()
   createUser(@Body() body: CreateUserDto) {
@@ -27,15 +40,20 @@ export class UsersController {
   }
 
   // update a user
+  @Serialize(CreateUserDto)
   @Patch('/:id')
   updateUser(@Param('id') id: string, @Body() body: Partial<CreateUserDto>) {
-    return this.usersService.update(parseInt(id), body)
+    return this.usersService.update(parseInt(id), body);
   }
 
-  @Delete("/:id")
+  @Delete('/:id')
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(parseInt(id));
   }
 
-
+  @Serialize(CreateUserDto)
+  @Post('/register')
+  async register(@Body() body: CreateUserDto) {
+    return this.authService.register(body.name, body.email, body.password);
+  }
 }
