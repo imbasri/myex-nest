@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  Session,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -16,6 +17,16 @@ import { UserDTO } from './dtos/user.dto';
 import { LoginUserDTO } from './dtos/login-user.dto';
 @Controller('users')
 export class UsersController {
+  @Get('/pet/:pet')
+  setPet(@Param('pet') pet: string, @Session() session: any) {
+    session.pet = pet;
+  }
+
+  @Get('/pet')
+  getPet(@Session() session: any) {
+    return session.pet; 
+  }
+
   @Serialize(UserDTO)
   @Get()
   findAllUsers(@Query('email') email: string) {
