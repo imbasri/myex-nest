@@ -13,6 +13,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from '../interceptor/serialize.interceptor';
 import { UserDTO } from './dtos/user.dto';
+import { LoginUserDTO } from './dtos/login-user.dto';
 @Controller('users')
 export class UsersController {
   @Serialize(UserDTO)
@@ -27,6 +28,7 @@ export class UsersController {
     private authService: AuthService,
   ) {}
   // create a new user
+  @Serialize(CreateUserDto)
   @Post()
   createUser(@Body() body: CreateUserDto) {
     return this.usersService.create(body.name, body.email, body.password);
@@ -51,9 +53,14 @@ export class UsersController {
     return this.usersService.remove(parseInt(id));
   }
 
-  @Serialize(CreateUserDto)
+  @Serialize(UserDTO)
   @Post('/register')
   async register(@Body() body: CreateUserDto) {
     return this.authService.register(body.name, body.email, body.password);
+  }
+
+  @Post('/login')
+  async login(@Body() body: LoginUserDTO) {
+    return this.authService.login(body.email, body.password);
   }
 }
